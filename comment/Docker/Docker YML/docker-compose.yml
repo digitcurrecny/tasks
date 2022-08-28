@@ -1,0 +1,69 @@
+version: "3.9"   
+services:
+    nginx:
+     build: 
+      context: ./config/ngnix 
+      dockerfile: Dockerfile
+     image: nginx-conf-php
+     container_name: webserver
+     ports:
+      - 8000:80
+     
+     #working_dir: /files
+     volumes:
+      - ./files:/usr/share/nginx/html/
+   
+    php:
+     image: php:7.4-fpm-alpine
+     container_name: my-php
+     #working_dir: /files
+     volumes:
+      - ./files:/usr/share/nginx/html/
+
+
+   
+    mysql:
+     image: mysql
+     container_name: mysql
+     restart: always
+     ports:
+      - 3306:3306
+     tty: true
+     environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: 123456
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+     volumes:
+      - ./db:/var/lib/mysql/
+    
+    phpmyadmin:
+      image: phpmyadmin
+      container_name: phpmyadmin
+      restart: always
+      ports:
+      - 1000:80
+      environment:
+       PMA_HOST: mysql
+
+
+    nodejs:
+     build: 
+      context: ./config/nodejs 
+      dockerfile: Dockerfile
+     image: nodejs:gulp
+     working_dir: /usr/share/nginx/html/
+     volumes:
+      - ./files:/usr/share/nginx/html/
+     container_name: nodejs
+     #first time
+     command: sh -c "npm init -y;npm install --save-dev gulp;gulp"
+     #not first
+     #CMD sh-c ("npm install;gulp")
+
+
+
+
+networks:
+ default:
+  name: "app-network"

@@ -1,0 +1,79 @@
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/digitcurrecny/laravelDDD.git
+git push -u origin main
+
+--------------
+git clone -- branch=main https://github.com/digitcurrecny/laravelDDD.git 
+git clone -- branch=main https://github.com/digitcurrecny/laravelDDD.git
+
+
+git diff 
+
+git diff  HEAD
+git diff  HEAD^
+
+git stash    Save in stash
+git stash - u
+git stash - a  Add ignored
+git stash show  show in stash
+git stash pop   added
+
+
+
+git log
+git log --oneline
+git log --oneline  --graph --all
+
+git blem
+
+git tag 
+
+git comit -- amend -m "new comit"
+
+git clean
+git clean -n
+git cleam -nd
+
+git clean -i    File
+git clean -id   File And directory
+
+
+
+fORSE
+git clean -f    File
+git clean -fd   File And directory
+
+
+git revert
+
+git  reset --soft HEAD~2
+git  reset -- hard Head~2
+
+
+
+git rm filename   dlete file
+
+git fetch origin mater 
+---------
+git pull
+
+
+git checkout -b loginapi   Crate Branch
+git branch -d logiapi     delete
+git checkout  loginapi
+---------
+n
+git rebase main
+git rebase 
+git rebase -i
+git checkout main
+
+git rebase -i   HEAD~2
+
+---------
+
+git merge main
+git reset --merge ORIG_HEAD

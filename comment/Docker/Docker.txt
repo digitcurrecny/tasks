@@ -1,0 +1,93 @@
+ i Docker Hub
+
+
+PWD    Root directry
+Tail   watch Directory
+
+----------------Countiner and Image ---------------
+docker run -d -p 80:80 docker/getting-started
+docker run -d -p 80:80 nginx
+docker run -d nginx
+winpty  docker run -it  alpine
+winpty  docker run -it  ubuntu bash -c "touch test.txt & tail -f /dev/null"
+winpty  docker run -it  ubuntu sh -c "touch test.txt && tail -f /dev/null"
+docker run --name mynginx1 -p 80:80 -d nginx   Run Continer whit Custom name 
+
+
+Docker PS    Continer run list
+docker ps -a
+--------------Envirmen Vermbent--------- 
+
+docker run -d -e MY_NAME=Jalal nginx
+
+----------------Volum  ---------------
+
+ docker volume create myvol   Crate Volom
+
+docker volume ls     volume  List
+
+
+winpty  docker run -it  -v  myvol:/mytest alpine      Conect Volume to Images
+winpty  docker run -it  -v  "$(pwd)":/mytest alpine      Conect Volume to Images
+winpty  docker run -d -p 8000:80 -v "$(pwd)/index:/usr/share/nginx/html" nginx      Conect Volume to Images
+
+
+  Crate new image form old images
+ docker commit fb871420f4a4  mytestimg:version3
+----------------------------
+
+
+Docker File
+
+Docker build -t  myimagename
+
+
+---------------------------------Network---------------
+
+Docker network ls
+
+ docker network prune   Delete all unused network
+
+ docker network  inspect  bridge   Check network 
+
+docker run -it nicolaka/netshoot
+
+Crate network------
+ docker network create jalalnet
+
+  docker run -id --network jalalnet --network-alias php-a --name phpalpine  php:fpm-alpine
+
+
+docker run -id  --network jalalnet --name netshoot nicolaka/netshoot
+docker inspect ab5fac606278   | grep IPAddress
+
+
+------------------ Docker Compose
+
+ 
+docker-compose up -d
+
+
+-------------------
+
+Run NPm and composser
+
+docker-compose run --rm composer create-project  laravel/laravel . 
+docker-compose run --rm composer require laravel/ui
+docker-compose run --rm  composer autoload-dump
+docker-compose run --rm  artisan migrate
+docker-compose run --rm  artisan optimize
+docker-compose run --rm  artisan config:clear
+
+ 
+docker-compose run --rm  artisan migrate:fresh
+docker-compose run --rm composer create-project laravel/laravel example-app
+
+docker-compose run --rm composer install --ignore-platform-reqs
+
+
+
+
+
+
+

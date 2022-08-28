@@ -1,0 +1,23 @@
+php artisan make:model ModelName -m
+
+php artisan make:controller Api/V1/UsersController  -r
+php artisan make:model Company -m
+php artisan make:resource UserResource
+
+php artisan make:resource User resource
+php artisan make:resource UserResource
+
+php artisan make:model Phone -mc
+
+php artisan  make:exception  UserException
+
+npm install && npm install vue-router
+
+php artisan make:controller Api/V1/UplodsController  -r
+ 
+
+
+php artisan make:controller Api/V1/LoginController  -r
+php artisan make:resource LoginResource
+
+composer require laravel/passport

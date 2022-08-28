@@ -1,0 +1,134 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: webserver
+    ports:
+      - 8000:80
+    volumes:
+      - ./src:/var/www/html
+      - ./config/ngnix/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - backend
+
+  php:
+    build:
+      context: ./config/php
+      dockerfile: Dockerfile
+    image: php:7.4-fpm-alpine
+    container_name: my-php
+    ports:
+      - 9000:9000
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - backend
+
+ 
+  composer:
+    image: composer:2.2.4
+    container_name: composer
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+
+    depends_on:
+      - php
+    networks:
+      - backend   
+
+ 
+  npm:
+    image: node
+    container_name: npm
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ['npm']
+
+     
+
+  artisan:
+    build:
+      context: ./config/php
+      dockerfile: Dockerfile
+    container_name: artisan
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - mysql 
+    working_dir: /var/www/html
+    entrypoint: ['php','/var/www/html/artisan']
+    networks:
+      - backend
+   
+    
+ 
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    tty: true
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+     - ./mysql:/var/lib/mysql
+ 
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 1000:80
+    environment:
+      PMA_HOST: mysql
+
+
+  postgresql:
+    image: postgres:12
+    container_name: postgresql
+    volumes:
+      - ./postgres_vol:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      PGDATA: /var/lib/postgresql/data
+    # env_file: ./config/postgresql/.env
+    ports:
+      - "5432:5432"
+    # networks: 
+    #   - postgres_network
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    # env_file: ./config/postgresql/.env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+    volumes:
+      - ./pgadmin_vol:/var/lib/pgadmin
+    ports:
+      - 5050:80
+    # networks:
+    #   - postgres_network
+    restart: always
+
+networks:
+  backend:
+    # default:
+    #   name: "app-network"

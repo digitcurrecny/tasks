@@ -1,0 +1,8 @@
+
+
+Composer.js :
+            "Application\\": "src/Application/",
+            "Core\\": "src/Core/",
+            "Domain\\": "src/Domain/"
+
+composer dump-autoload
